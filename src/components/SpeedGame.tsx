@@ -188,22 +188,22 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
       <Header title="모양을 빠르게 찾아요!" onHome={onHome} stars={getStars()} />
 
       {/* Main Game Interface (No absolute position overflow = perfectly responsive) */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-stretch select-none">
+      <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 items-stretch select-none w-full">
         
         {/* P1 Section */}
         <div className="flex-1 flex flex-col bg-white border-2 border-blue-100 rounded-3xl overflow-hidden shadow-sm">
-          <div className="bg-blue-50/70 px-4 py-3 border-b border-blue-100 flex items-center justify-between">
-            <span className="text-blue-900 font-extrabold text-xs sm:text-sm">
-              🔵 1P 영역 (왼쪽 터치)
+          <div className="bg-blue-50/70 px-2 sm:px-4 py-2 border-b border-blue-100 flex items-center justify-between">
+            <span className="text-blue-900 font-extrabold text-[10px] sm:text-sm">
+              🔵 1P 영역
             </span>
-            <div className="text-blue-600 font-black text-xs bg-white px-2.5 py-1 rounded-xl shadow-2xs">
-              득점: {score1}
+            <div className="text-blue-600 font-black text-[10px] sm:text-xs bg-white px-2 py-0.5 rounded-lg shadow-2xs">
+              {score1}점
             </div>
           </div>
 
-          <div className="relative flex-1 p-4 bg-blue-50/5 min-h-[180px]">
+          <div className="relative flex-1 p-2 sm:p-4 bg-blue-50/5 min-h-[140px] sm:min-h-[180px]">
             {/* CSS Grid ensures no overlap and perfectly responsive layouts on electronic blackboards! */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 justify-items-center">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-3 justify-items-center">
               {items1.map((it, idx) => (
                 <motion.div
                   key={`p1-${idx}`}
@@ -218,11 +218,11 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
                   whileHover={!it.isFound ? { scale: 1.08 } : {}}
                   whileTap={!it.isFound ? { scale: 0.95 } : {}}
                   transition={{ duration: 0.3 }}
-                  className={`relative p-3 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white border border-stone-100 shadow-2xs flex items-center justify-center cursor-pointer ${
+                  className={`relative p-1.5 w-11 h-11 xs:w-14 xs:h-14 sm:p-3 sm:w-20 sm:h-20 rounded-xl bg-white border border-stone-100 shadow-2xs flex items-center justify-center cursor-pointer ${
                     it.isFound ? 'pointer-events-none bg-stone-50' : 'hover:shadow-sm'
                   }`}
                 >
-                  <ShapeSvg shapeId={it.shape.id} size={42} color={it.color} />
+                  <ShapeSvg shapeId={it.shape.id} size={36} className="w-7 h-7 sm:w-10 sm:h-10" color={it.color} />
                 </motion.div>
               ))}
             </div>
@@ -234,11 +234,10 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-blue-500/85 flex flex-col items-center justify-center text-white"
+                  className="absolute inset-0 bg-blue-500/85 flex flex-col items-center justify-center text-white p-1 text-center"
                 >
-                  <Zap className="w-10 h-10 text-yellow-300 animate-bounce mb-1" />
-                  <span className="text-lg font-black tracking-wide">내가 먼저 찾았어요! ⚡</span>
-                  <span className="text-xs font-bold text-blue-100 mt-1">+10점 보너스 획득!</span>
+                  <Zap className="w-6 h-6 sm:w-10 sm:h-10 text-yellow-300 animate-bounce mb-1" />
+                  <span className="text-xs sm:text-lg font-black tracking-wide">성공! ⚡</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -246,39 +245,39 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
         </div>
 
         {/* Center Target Info & Timer (Stays perfectly between panels) */}
-        <div className="bg-amber-50/40 p-4 border border-amber-200/50 rounded-3xl flex flex-row lg:flex-col justify-around lg:justify-center items-center gap-4 lg:min-w-[140px] shadow-sm">
+        <div className="bg-amber-50/40 p-1.5 sm:p-4 border border-amber-200/50 rounded-3xl flex flex-col justify-center items-center gap-2 sm:gap-4 min-w-[65px] sm:min-w-[140px] shadow-sm">
           <div className="text-center">
-            <span className="text-[10px] font-black text-stone-400 tracking-wider block mb-1">
-              남은 시간
+            <span className="text-[9px] font-black text-stone-400 tracking-wider block mb-0.5 sm:mb-1">
+              시간
             </span>
-            <div className={`text-xl sm:text-2xl font-black tabular-nums ${timeLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-stone-800'}`}>
+            <div className={`text-sm sm:text-2xl font-black tabular-nums ${timeLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-stone-800'}`}>
               {timeLeft}초
             </div>
           </div>
 
-          <div className="w-px h-10 bg-stone-200 lg:w-full lg:h-px lg:my-1" />
+          <div className="w-6 h-px bg-stone-200 sm:w-12 my-1" />
 
           {/* Core Target Display */}
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-black text-amber-800 tracking-wider block mb-1.5 uppercase">
-              목표 도형을 찾아라!
+            <span className="text-[9px] font-black text-amber-800 tracking-wider block mb-1.5 uppercase text-center hidden sm:block">
+              목표 도형!
             </span>
             {targetShape && (
               <motion.div
                 key={targetShape.id}
                 initial={{ scale: 0.8, rotate: -15 }}
                 animate={{ scale: 1, rotate: 0 }}
-                className="bg-white p-3 rounded-2xl border-2 border-amber-300 shadow-md flex flex-col items-center justify-center animate-pulse"
+                className="bg-white p-1 sm:p-3 rounded-2xl border-2 border-amber-300 shadow-md flex flex-col items-center justify-center animate-pulse"
               >
-                <ShapeSvg shapeId={targetShape.id} size={48} color={targetColor} />
-                <span className="text-[11px] font-black text-stone-700 mt-1.5">
+                <ShapeSvg shapeId={targetShape.id} size={34} className="w-6 h-6 sm:w-10 sm:h-10" color={targetColor} />
+                <span className="text-[9px] sm:text-[11px] font-black text-stone-700 mt-1">
                   {targetShape.name}
                 </span>
               </motion.div>
             )}
           </div>
 
-          <div className="w-px h-10 bg-stone-200 lg:w-full lg:h-px lg:my-1" />
+          <div className="w-6 h-px bg-stone-200 sm:w-12 my-1" />
 
           {/* Realtime scoring comparison indicator */}
           <div className="hidden sm:block text-center">
@@ -291,17 +290,17 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
 
         {/* P2 Section */}
         <div className="flex-1 flex flex-col bg-white border-2 border-rose-100 rounded-3xl overflow-hidden shadow-sm">
-          <div className="bg-rose-50/70 px-4 py-3 border-b border-rose-100 flex items-center justify-between">
-            <span className="text-rose-900 font-extrabold text-xs sm:text-sm">
-              🔴 2P 영역 (오른쪽 터치)
+          <div className="bg-rose-50/70 px-2 sm:px-4 py-2 border-b border-rose-100 flex items-center justify-between">
+            <span className="text-rose-900 font-extrabold text-[10px] sm:text-sm">
+              🔴 2P 영역
             </span>
-            <div className="text-rose-600 font-black text-xs bg-white px-2.5 py-1 rounded-xl shadow-2xs">
-              득점: {score2}
+            <div className="text-rose-600 font-black text-[10px] sm:text-xs bg-white px-2 py-0.5 rounded-lg shadow-2xs">
+              {score2}점
             </div>
           </div>
 
-          <div className="relative flex-1 p-4 bg-rose-50/5 min-h-[180px]">
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 justify-items-center">
+          <div className="relative flex-1 p-2 sm:p-4 bg-rose-50/5 min-h-[140px] sm:min-h-[180px]">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-3 justify-items-center">
               {items2.map((it, idx) => (
                 <motion.div
                   key={`p2-${idx}`}
@@ -316,11 +315,11 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
                   whileHover={!it.isFound ? { scale: 1.08 } : {}}
                   whileTap={!it.isFound ? { scale: 0.95 } : {}}
                   transition={{ duration: 0.3 }}
-                  className={`relative p-3 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white border border-stone-100 shadow-2xs flex items-center justify-center cursor-pointer ${
+                  className={`relative p-1.5 w-11 h-11 xs:w-14 xs:h-14 sm:p-3 sm:w-20 sm:h-20 rounded-xl bg-white border border-stone-100 shadow-2xs flex items-center justify-center cursor-pointer ${
                     it.isFound ? 'pointer-events-none bg-stone-50' : 'hover:shadow-sm'
                   }`}
                 >
-                  <ShapeSvg shapeId={it.shape.id} size={42} color={it.color} />
+                  <ShapeSvg shapeId={it.shape.id} size={36} className="w-7 h-7 sm:w-10 sm:h-10" color={it.color} />
                 </motion.div>
               ))}
             </div>
@@ -332,11 +331,10 @@ export const SpeedGame: React.FC<SpeedGameProps> = ({ onHome }) => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-rose-500/85 flex flex-col items-center justify-center text-white"
+                  className="absolute inset-0 bg-rose-500/85 flex flex-col items-center justify-center text-white p-1 text-center"
                 >
-                  <Zap className="w-10 h-10 text-yellow-300 animate-bounce mb-1" />
-                  <span className="text-lg font-black tracking-wide">내가 먼저 찾았어요! ⚡</span>
-                  <span className="text-xs font-bold text-rose-100 mt-1">+10점 보너스 획득!</span>
+                  <Zap className="w-6 h-6 sm:w-10 sm:h-10 text-yellow-300 animate-bounce mb-1" />
+                  <span className="text-xs sm:text-lg font-black tracking-wide">성공! ⚡</span>
                 </motion.div>
               )}
             </AnimatePresence>

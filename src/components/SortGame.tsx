@@ -313,15 +313,15 @@ export const SortGame: React.FC<SortGameProps> = ({ onHome }) => {
       <Header title="모양대로 정리해요!" onHome={onHome} stars={getStars()} />
 
       {/* Main Game Frame (Responsive Grid columns that never overlap or cut off) */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-stretch select-none">
+      <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 items-stretch select-none w-full">
         
         {/* P1 Drag Canvas */}
         <div className="flex-1 flex flex-col bg-white border-2 border-blue-100 rounded-3xl overflow-hidden shadow-sm">
-          <div className="bg-blue-50/70 px-4 py-3 border-b border-blue-100 flex items-center justify-between">
-            <span className="text-blue-900 font-extrabold text-[11px] sm:text-xs">
-              🔵 1P — 떨어지는 모양을 잡아서 아래 알맞은 상자에 드래그하세요!
+          <div className="bg-blue-50/70 px-2 sm:px-4 py-2 border-b border-blue-100 flex items-center justify-between">
+            <span className="text-blue-900 font-extrabold text-[10px] sm:text-xs">
+              🔵 1P 영역 (드래그)
             </span>
-            <span className="bg-white text-blue-600 px-2 py-0.5 rounded-lg text-xs font-black shadow-2xs">
+            <span className="bg-white text-blue-600 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-black shadow-2xs">
               {score1}점
             </span>
           </div>
@@ -408,16 +408,16 @@ export const SortGame: React.FC<SortGameProps> = ({ onHome }) => {
               <div
                 key={`b1-${t.id}`}
                 data-bucket-id={`p1-${t.id}`}
-                className="flex flex-col items-center justify-center py-3.5 hover:bg-stone-100/50 transition-colors"
+                className="flex flex-col items-center justify-center py-2 sm:py-3.5 hover:bg-stone-100/50 transition-colors"
               >
-                <div className="pointer-events-none scale-90 sm:scale-100 opacity-80">
-                  <ShapeSvg shapeId={t.id} size={36} color="#8795a1" />
+                <div className="pointer-events-none scale-75 sm:scale-100 opacity-80">
+                  <ShapeSvg shapeId={t.id} size={28} className="w-5 h-5 sm:w-9 sm:h-9" color="#8795a1" />
                 </div>
-                <span className="text-[10px] font-black text-stone-400 mt-1 uppercase pointer-events-none">
+                <span className="text-[8px] sm:text-[10px] font-black text-stone-400 mt-0.5 sm:mt-1 uppercase pointer-events-none">
                   {t.name}
                 </span>
-                <span className="text-xs font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100 mt-1.5 pointer-events-none">
-                  {bucketCounts1[t.id] || 0}개
+                <span className="text-[9px] sm:text-xs font-black text-blue-600 bg-blue-50 px-1 sm:px-2 py-0.5 rounded border border-blue-100 mt-1 pointer-events-none">
+                  {bucketCounts1[t.id] || 0}
                 </span>
               </div>
             ))}
@@ -425,38 +425,38 @@ export const SortGame: React.FC<SortGameProps> = ({ onHome }) => {
         </div>
 
         {/* Center Panel (Timer / Overall Stats) */}
-        <div className="bg-amber-50/40 p-4 border border-stone-200 rounded-3xl flex flex-row lg:flex-col justify-around lg:justify-center items-center gap-4 lg:min-w-[130px] shadow-sm self-center">
+        <div className="bg-amber-50/40 p-1.5 sm:p-4 border border-stone-200 rounded-3xl flex flex-col justify-center items-center gap-2 sm:gap-4 min-w-[65px] sm:min-w-[130px] shadow-sm self-center">
           <div className="text-center">
-            <span className="text-[10px] font-black text-stone-400 tracking-wider block mb-1">
-              남은 시간
+            <span className="text-[9px] font-black text-stone-400 tracking-wider block mb-0.5 sm:mb-1">
+              시간
             </span>
-            <div className={`text-xl sm:text-2xl font-black tabular-nums ${secLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-stone-800'}`}>
+            <div className={`text-sm sm:text-2xl font-black tabular-nums ${secLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-stone-800'}`}>
               {secLeft}초
             </div>
           </div>
 
-          <div className="w-px h-10 bg-stone-200 lg:w-full lg:h-px lg:my-1" />
+          <div className="w-6 h-px bg-stone-200 sm:w-12 my-1" />
 
           <div className="text-center">
-            <span className="text-[9px] font-black text-blue-500 uppercase block">1P 점수</span>
-            <div className="text-lg font-black text-blue-600 tabular-nums">{score1}</div>
+            <span className="text-[8px] sm:text-[9px] font-black text-blue-500 uppercase block">1P 점수</span>
+            <div className="text-xs sm:text-lg font-black text-blue-600 tabular-nums">{score1}</div>
           </div>
 
-          <div className="w-px h-10 bg-stone-200 lg:w-full lg:h-px lg:my-1" />
+          <div className="w-6 h-px bg-stone-200 sm:w-12 my-1" />
 
           <div className="text-center">
-            <span className="text-[9px] font-black text-rose-500 uppercase block">2P 점수</span>
-            <div className="text-lg font-black text-rose-600 tabular-nums">{score2}</div>
+            <span className="text-[8px] sm:text-[9px] font-black text-rose-500 uppercase block">2P 점수</span>
+            <div className="text-xs sm:text-lg font-black text-rose-600 tabular-nums">{score2}</div>
           </div>
         </div>
 
         {/* P2 Drag Canvas */}
         <div className="flex-1 flex flex-col bg-white border-2 border-rose-100 rounded-3xl overflow-hidden shadow-sm">
-          <div className="bg-rose-50/70 px-4 py-3 border-b border-rose-100 flex items-center justify-between">
-            <span className="text-rose-900 font-extrabold text-[11px] sm:text-xs">
-              🔴 2P — 떨어지는 모양을 잡아서 아래 알맞은 상자에 드래그하세요!
+          <div className="bg-rose-50/70 px-2 sm:px-4 py-2 border-b border-rose-100 flex items-center justify-between">
+            <span className="text-rose-900 font-extrabold text-[10px] sm:text-xs">
+              🔴 2P 영역 (드래그)
             </span>
-            <span className="bg-white text-rose-600 px-2 py-0.5 rounded-lg text-xs font-black shadow-2xs">
+            <span className="bg-white text-rose-600 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-black shadow-2xs">
               {score2}점
             </span>
           </div>
@@ -543,16 +543,16 @@ export const SortGame: React.FC<SortGameProps> = ({ onHome }) => {
               <div
                 key={`b2-${t.id}`}
                 data-bucket-id={`p2-${t.id}`}
-                className="flex flex-col items-center justify-center py-3.5 hover:bg-stone-100/50 transition-colors"
+                className="flex flex-col items-center justify-center py-2 sm:py-3.5 hover:bg-stone-100/50 transition-colors"
               >
-                <div className="pointer-events-none scale-90 sm:scale-100 opacity-80">
-                  <ShapeSvg shapeId={t.id} size={36} color="#8795a1" />
+                <div className="pointer-events-none scale-75 sm:scale-100 opacity-80">
+                  <ShapeSvg shapeId={t.id} size={28} className="w-5 h-5 sm:w-9 sm:h-9" color="#8795a1" />
                 </div>
-                <span className="text-[10px] font-black text-stone-400 mt-1 uppercase pointer-events-none">
+                <span className="text-[8px] sm:text-[10px] font-black text-stone-400 mt-0.5 sm:mt-1 uppercase pointer-events-none">
                   {t.name}
                 </span>
-                <span className="text-xs font-black text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100 mt-1.5 pointer-events-none">
-                  {bucketCounts2[t.id] || 0}개
+                <span className="text-[9px] sm:text-xs font-black text-rose-600 bg-rose-50 px-1 sm:px-2 py-0.5 rounded border border-rose-100 mt-1 pointer-events-none">
+                  {bucketCounts2[t.id] || 0}
                 </span>
               </div>
             ))}

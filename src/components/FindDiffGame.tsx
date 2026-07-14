@@ -618,21 +618,21 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
         </motion.div>
       ) : (
         // Active Battle screen
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-stretch select-none">
+        <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 items-stretch select-none w-full">
           
           {/* P1 Field (Blue, Left side) */}
           <div className="flex-1 flex flex-col bg-white border-2 border-blue-100 rounded-3xl overflow-hidden shadow-sm">
-            <div className="bg-blue-50/70 px-4 py-3 border-b border-blue-100 flex items-center justify-between">
-              <span className="text-blue-900 font-black text-xs sm:text-sm">
+            <div className="bg-blue-50/70 px-2 sm:px-4 py-2 sm:py-3 border-b border-blue-100 flex items-center justify-between">
+              <span className="text-blue-900 font-black text-[10px] sm:text-xs">
                 🔵 1P 영역 (다른 모양 찾기!)
               </span>
-              <div className="text-blue-600 font-black text-xs sm:text-sm bg-white px-2.5 py-1 rounded-xl shadow-2xs">
-                득점: {p1Score}
+              <div className="text-blue-600 font-black text-[10px] sm:text-xs bg-white px-2 py-0.5 sm:py-1 rounded-lg sm:rounded-xl shadow-2xs">
+                {p1Score}점
               </div>
             </div>
 
-            <div className="relative flex-1 p-4 bg-blue-50/5 min-h-[180px]">
-              <div className="grid grid-cols-3 gap-3 justify-items-center">
+            <div className="relative flex-1 p-2 sm:p-4 bg-blue-50/5 min-h-[140px] sm:min-h-[180px]">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-3 justify-items-center">
                 {p1Items.map((it, idx) => (
                   <motion.div
                     key={`p1-diff-${idx}`}
@@ -647,14 +647,14 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
                     whileHover={!it.isFound ? { scale: 1.08 } : {}}
                     whileTap={!it.isFound ? { scale: 0.95 } : {}}
                     transition={{ duration: 0.3 }}
-                    className={`relative p-4 w-20 h-20 sm:w-22 sm:h-22 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-center cursor-pointer ${
+                    className={`relative p-1.5 w-11 h-11 xs:w-14 xs:h-14 sm:p-4 sm:w-20 sm:h-20 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-center cursor-pointer ${
                       it.isFound ? 'pointer-events-none bg-stone-50' : 'hover:shadow-2xs'
                     }`}
                   >
                     <div className={`transition-transform duration-200 ${
                       it.rotation === 90 ? 'rotate-90' : it.rotation === 180 ? 'rotate-180' : it.rotation === 270 ? 'rotate-270' : ''
                     }`}>
-                      <ShapeSvg shapeId={it.shape.id} size={46} color={it.color} />
+                      <ShapeSvg shapeId={it.shape.id} size={36} className="w-7 h-7 sm:w-11 sm:h-11" color={it.color} />
                     </div>
                   </motion.div>
                 ))}
@@ -667,11 +667,10 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-blue-500/85 flex flex-col items-center justify-center text-white"
+                    className="absolute inset-0 bg-blue-500/85 flex flex-col items-center justify-center text-white p-1"
                   >
-                    <Zap className="w-10 h-10 text-yellow-300 animate-bounce mb-1" />
-                    <span className="text-lg font-black">내가 먼저 찾았어요! ⚡</span>
-                    <span className="text-xs font-bold text-blue-100 mt-1">+10점 보너스 획득!</span>
+                    <Zap className="w-6 h-6 sm:w-10 sm:h-10 text-yellow-300 animate-bounce mb-1" />
+                    <span className="text-xs sm:text-lg font-black text-center">내가 먼저 찾았어요! ⚡</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -679,27 +678,27 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
           </div>
 
           {/* Center Info Panel (Time countdown, rules) */}
-          <div className="bg-amber-50/40 p-4 border border-amber-200/50 rounded-3xl flex flex-row lg:flex-col justify-around lg:justify-center items-center gap-4 lg:min-w-[140px] shadow-sm select-none">
+          <div className="bg-amber-50/40 p-1.5 sm:p-4 border border-amber-200/50 rounded-3xl flex flex-col justify-center items-center gap-2 sm:gap-4 min-w-[65px] sm:min-w-[140px] shadow-sm select-none">
             <div className="text-center">
-              <span className="text-[10px] font-extrabold text-stone-400 block tracking-wider uppercase">남은 시간</span>
-              <span className={`text-2xl sm:text-3xl font-black tracking-tight ${timeLeft <= 10 ? 'text-rose-500 animate-pulse' : 'text-stone-800'}`}>
+              <span className="text-[9px] font-extrabold text-stone-400 block tracking-wider uppercase">시간</span>
+              <span className={`text-sm sm:text-3xl font-black tracking-tight ${timeLeft <= 10 ? 'text-rose-500 animate-pulse' : 'text-stone-800'}`}>
                 {timeLeft}초
               </span>
             </div>
 
-            <div className="w-px h-8 bg-stone-200 lg:w-12 lg:h-px my-1" />
+            <div className="w-6 h-px bg-stone-200 sm:w-12 my-1" />
 
-            <div className="text-center max-w-[100px]">
+            <div className="text-center hidden sm:block max-w-[100px]">
               <span className="text-[10px] font-black text-amber-800 leading-normal block">
                 각자의 보드에서 <b className="text-amber-600">다른 것 한 개</b>를 가장 먼저 터치하세요!
               </span>
             </div>
 
-            <div className="w-px h-8 bg-stone-200 lg:w-12 lg:h-px my-1" />
+            <div className="w-6 h-px bg-stone-200 sm:w-12 my-1 hidden sm:block" />
 
             <button
               onClick={resetAll}
-              className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-600 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              className="px-2 sm:px-3 py-1 sm:py-1.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-600 text-[10px] sm:text-xs font-bold rounded-xl transition-colors cursor-pointer"
             >
               종료
             </button>
@@ -707,17 +706,17 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
 
           {/* P2 Field (Rose, Right side) */}
           <div className="flex-1 flex flex-col bg-white border-2 border-rose-100 rounded-3xl overflow-hidden shadow-sm">
-            <div className="bg-rose-50/70 px-4 py-3 border-b border-rose-100 flex items-center justify-between">
-              <span className="text-rose-900 font-black text-xs sm:text-sm">
+            <div className="bg-rose-50/70 px-2 sm:px-4 py-2 sm:py-3 border-b border-rose-100 flex items-center justify-between">
+              <span className="text-rose-900 font-black text-[10px] sm:text-xs">
                 🔴 2P 영역 (다른 모양 찾기!)
               </span>
-              <div className="text-rose-600 font-black text-xs sm:text-sm bg-white px-2.5 py-1 rounded-xl shadow-2xs">
-                득점: {p2Score}
+              <div className="text-rose-600 font-black text-[10px] sm:text-xs bg-white px-2 py-0.5 sm:py-1 rounded-lg sm:rounded-xl shadow-2xs">
+                {p2Score}점
               </div>
             </div>
 
-            <div className="relative flex-1 p-4 bg-rose-50/5 min-h-[180px]">
-              <div className="grid grid-cols-3 gap-3 justify-items-center">
+            <div className="relative flex-1 p-2 sm:p-4 bg-rose-50/5 min-h-[140px] sm:min-h-[180px]">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-3 justify-items-center">
                 {p2Items.map((it, idx) => (
                   <motion.div
                     key={`p2-diff-${idx}`}
@@ -732,14 +731,14 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
                     whileHover={!it.isFound ? { scale: 1.08 } : {}}
                     whileTap={!it.isFound ? { scale: 0.95 } : {}}
                     transition={{ duration: 0.3 }}
-                    className={`relative p-4 w-20 h-20 sm:w-22 sm:h-22 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-center cursor-pointer ${
+                    className={`relative p-1.5 w-11 h-11 xs:w-14 xs:h-14 sm:p-4 sm:w-20 sm:h-20 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-center cursor-pointer ${
                       it.isFound ? 'pointer-events-none bg-stone-50' : 'hover:shadow-2xs'
                     }`}
                   >
                     <div className={`transition-transform duration-200 ${
                       it.rotation === 90 ? 'rotate-90' : it.rotation === 180 ? 'rotate-180' : it.rotation === 270 ? 'rotate-270' : ''
                     }`}>
-                      <ShapeSvg shapeId={it.shape.id} size={46} color={it.color} />
+                      <ShapeSvg shapeId={it.shape.id} size={36} className="w-7 h-7 sm:w-11 sm:h-11" color={it.color} />
                     </div>
                   </motion.div>
                 ))}
@@ -752,11 +751,10 @@ export const FindDiffGame: React.FC<FindDiffGameProps> = ({ onHome }) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-rose-500/85 flex flex-col items-center justify-center text-white"
+                    className="absolute inset-0 bg-rose-500/85 flex flex-col items-center justify-center text-white p-1"
                   >
-                    <Zap className="w-10 h-10 text-yellow-300 animate-bounce mb-1" />
-                    <span className="text-lg font-black">내가 먼저 찾았어요! ⚡</span>
-                    <span className="text-xs font-bold text-rose-100 mt-1">+10점 보너스 획득!</span>
+                    <Zap className="w-6 h-6 sm:w-10 sm:h-10 text-yellow-300 animate-bounce mb-1" />
+                    <span className="text-xs sm:text-lg font-black text-center">내가 먼저 찾았어요! ⚡</span>
                   </motion.div>
                 )}
               </AnimatePresence>

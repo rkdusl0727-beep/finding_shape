@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Outfit:wght@400;600;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", "Noto Sans KR", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: #d6d3d1; /* warm slate stone */
+}

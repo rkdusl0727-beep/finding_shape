@@ -13,7 +13,7 @@ export const Home: React.FC<HomeProps> = ({ onSelectMode }) => {
       mode: 'trace' as GameMode,
       icon: PenTool,
       title: '모양을 따라 그려요!',
-      desc: '희미한 가이드 선을 따라 그리며 여러 도형을 익혀봅니다.',
+      desc: '가이드 선을 따라 그리며 여러 도형을 익혀봅니다.',
       bgColor: 'bg-rose-50/50 border-rose-100 hover:bg-rose-100/50',
       iconColor: 'text-rose-500 bg-rose-100/70',
     },

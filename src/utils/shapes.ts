@@ -260,11 +260,10 @@ export function cImg(shape: Shape, size: number, style: string): string {
 
 // Calculate the score of drawing compared to ideal shape path
 export function scoreD(pts: Point[], shape: Shape): number {
-  if (pts.length < 12) return 0;
-  let x0 = 1e9,
-    y0 = 1e9,
-    x1 = -1e9,
-    y1 = -1e9;
+  if (pts.length < 10) return 0;
+  
+  // 1. Find bounding box of user points and normalize
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
   pts.forEach((p) => {
     x0 = Math.min(x0, p.x);
     y0 = Math.min(y0, p.y);
@@ -275,11 +274,9 @@ export function scoreD(pts: Point[], shape: Shape): number {
   const dh = y1 - y0 || 1;
   const nd = pts.map((p) => ({ x: (p.x - x0) / dw, y: (p.y - y0) / dh }));
 
+  // 2. Find bounding box of reference points and normalize
   const rp = shape.pts(100);
-  let rx0 = 1e9,
-    ry0 = 1e9,
-    rx1 = -1e9,
-    ry1 = -1e9;
+  let rx0 = 1e9, ry0 = 1e9, rx1 = -1e9, ry1 = -1e9;
   rp.forEach((p) => {
     rx0 = Math.min(rx0, p.x);
     ry0 = Math.min(ry0, p.y);
@@ -290,13 +287,54 @@ export function scoreD(pts: Point[], shape: Shape): number {
   const rh = ry1 - ry0 || 1;
   const nr = rp.map((p) => ({ x: (p.x - rx0) / rw, y: (p.y - ry0) / rh }));
 
-  const N = 80;
-  const sd = Array.from({ length: N }, (_, i) => nd[Math.floor((i * (nd.length - 1)) / (N - 1))]);
-  const sr = Array.from({ length: N }, (_, i) => nr[Math.floor((i * (nr.length - 1)) / (N - 1))]);
+  // Helper to calculate squared distance between two points
+  const distSq = (p1: Point, p2: Point) => (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2;
 
-  let d = 0;
-  sd.forEach((p, i) => {
-    d += Math.sqrt((p.x - sr[i].x) ** 2 + (p.y - sr[i].y) ** 2);
+  // 3. For each user point, find the distance to the closest reference point (Precision)
+  let sumMinDistNdToNr = 0;
+  nd.forEach((p) => {
+    let minDist = 1e9;
+    nr.forEach((r) => {
+      const d = distSq(p, r);
+      if (d < minDist) minDist = d;
+    });
+    sumMinDistNdToNr += Math.sqrt(minDist);
   });
-  return Math.max(0, Math.min(100, Math.floor((1 - (d / N) * 1.5) * 100)));
+  const avgDistNdToNr = sumMinDistNdToNr / nd.length;
+
+  // 4. For each reference point, find the distance to the closest user point (Coverage)
+  // To avoid performance issues, we sample nr to 50 points
+  const sampleNrSize = Math.min(nr.length, 50);
+  let sumMinDistNrToNd = 0;
+  for (let i = 0; i < sampleNrSize; i++) {
+    const idx = Math.floor((i * (nr.length - 1)) / (sampleNrSize - 1));
+    const r = nr[idx];
+    let minDist = 1e9;
+    nd.forEach((p) => {
+      const d = distSq(r, p);
+      if (d < minDist) minDist = d;
+    });
+    sumMinDistNrToNd += Math.sqrt(minDist);
+  }
+  const avgDistNrToNd = sumMinDistNrToNd / sampleNrSize;
+
+  // 5. Calculate scores with a very child-friendly threshold
+  const precisionScore = Math.max(0, 100 - avgDistNdToNr * 350);
+  const coverageScore = Math.max(0, 100 - avgDistNrToNd * 300);
+
+  // Combine them
+  let score = Math.floor(precisionScore * 0.5 + coverageScore * 0.5);
+
+  // If they made an honest attempt (average distance is reasonably low),
+  // boost the score so it's rewarding and extremely easy for children to pass!
+  if (avgDistNdToNr < 0.22 && avgDistNrToNd < 0.28) {
+    score = Math.max(score, 75); // Safe boost to 75%+ which is a guaranteed pass
+  }
+  
+  // Guard against completely unrelated drawings (e.g. huge deviation)
+  if (avgDistNdToNr > 0.35) {
+    score = Math.min(score, 15);
+  }
+
+  return Math.min(100, Math.max(0, score));
 }
